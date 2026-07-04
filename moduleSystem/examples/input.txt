@@ -1,0 +1,2 @@
+Hello from ES Modules!
+Welcome to Node.js.
