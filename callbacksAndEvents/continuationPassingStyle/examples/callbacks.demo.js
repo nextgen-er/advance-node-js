@@ -1,4 +1,4 @@
-const { addCps, subtractCps } = require('../src/syncCallbacks')
+const { addCps, subtractCps } = require('../src/callbacks')
 
 console.log('before addition')
 addCps(1, 2, (result) => console.log(`Result: ${result}`))
