@@ -4,6 +4,8 @@ import { urlToFilename, getPageLinks, download } from "../../../utils/spider.mjs
 
 export function spider(url, nesting, cb) {
     const filename = urlToFilename(url)
+    const spidering = new Set()
+    if (spidering.has(url)) return process.nextTick(cb)
     fs.access(filename, err => {
         if (!err || err.code !== 'ENOENT') return cb(null, filename, false)
         console.log(`Downloading ${url} into ${filename}`)
@@ -13,6 +15,7 @@ export function spider(url, nesting, cb) {
             spiderLinks(url, requestContent, nesting, cb)
         })
     })
+    spidering.add(url)
 }
 
 
