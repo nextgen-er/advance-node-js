@@ -11,6 +11,8 @@ function makeSampleTask(name) {
 }
 
 const queue = new TaskQueue(2)
+queue.on('error', console.error)
+queue.on('empty', () => console.log('Queue Drained'))
 
 function task1(cb) {
     console.log(`Task 1 started`)
@@ -29,9 +31,11 @@ function task1(cb) {
 function task2(cb) {
     console.log(`Task 2 started`)
 
-    queue.pushTask(makeSampleTask('task 2 -> subtask 1'))
-    queue.pushTask(makeSampleTask('task 2 -> subtask 2'))
-    queue.pushTask(makeSampleTask('task 2 -> subtask 3'))
+    queue
+        .pushTask(makeSampleTask('task 2 -> subtask 1'))
+        .pushTask(makeSampleTask('task 2 -> subtask 2'))
+        .pushTask((done) => done(new Error('Simulated Error')))
+        .pushTask(makeSampleTask('task 2 -> subtask 3'))
 
     setTimeout(() => {
         console.log(`Task 2 completed`)
